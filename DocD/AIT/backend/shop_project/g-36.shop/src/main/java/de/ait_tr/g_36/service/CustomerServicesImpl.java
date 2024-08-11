@@ -1,7 +1,6 @@
 package de.ait_tr.g_36.service;
 
 import de.ait_tr.g_36.domain.entity.Customer;
-import de.ait_tr.g_36.domain.entity.Product;
 import de.ait_tr.g_36.service.interfaces.CustomerServices;
 import java.math.BigDecimal;
 import java.util.List;
@@ -12,7 +11,7 @@ public class CustomerServicesImpl implements CustomerServices {
 
   @Override
   public Customer saveCustomer(Customer customer) {
-    return null;
+    return customer;
   }
 
   @Override
@@ -27,7 +26,7 @@ public class CustomerServicesImpl implements CustomerServices {
 
   @Override
   public Customer updateCustomer(Customer customer) {
-    return null;
+    return customer;
   }
 
   @Override

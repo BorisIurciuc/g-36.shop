@@ -1,10 +1,10 @@
 package de.ait_tr.g_36.controller;
 
 import de.ait_tr.g_36.domain.entity.Customer;
-import de.ait_tr.g_36.domain.entity.Product;
 import de.ait_tr.g_36.service.interfaces.CustomerServices;
 import java.math.BigDecimal;
 import java.util.List;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,15 +13,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/customers")
 public class CustomerController {
-
   private final CustomerServices service;
 
   public CustomerController(CustomerServices service) {
     this.service = service;
+  }
+
+  @GetMapping("/test")
+  public String test() {
+    return "CustomerController is working";
   }
 
   @PostMapping("/save")
@@ -35,7 +40,10 @@ public class CustomerController {
       return service.getAllCustomers();
     } else {
       Customer customer = service.getCustomerById(id);
-      return customer == null ? null : List.of(customer);
+      if (customer == null) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found");
+      }
+      return List.of(customer);
     }
   }
 
