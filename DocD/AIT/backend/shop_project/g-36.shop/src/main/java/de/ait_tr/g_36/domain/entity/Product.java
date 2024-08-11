@@ -1,24 +1,30 @@
 package de.ait_tr.g_36.domain.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
  * 07/08/2024 g-36.shop * @author Boris Iurciuc (cohort36)
  */
-
+@Entity
+//@Table(name = "product")
 public class Product {
+
+  @Id
   private Long id;
   private String title;
   private BigDecimal price;
   private boolean active;
 
-  public Long getId() {
-    return id;
-  }
-
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public Long getId() {
+    return id;
   }
 
   public String getTitle() {
@@ -66,4 +72,6 @@ public class Product {
     return String.format("Product: id - %d, title - %s, price - %s, active - %s",
         id, title, price, active ? "yes" : "no");
   }
+
+
 }

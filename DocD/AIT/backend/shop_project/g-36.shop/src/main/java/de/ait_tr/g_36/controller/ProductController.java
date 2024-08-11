@@ -28,7 +28,7 @@ public class ProductController {
   }
 
   // CRUD - Create(POST), Read (GET), Update (PUT), Delete (DELETE)
-  @PostMapping
+  @PostMapping("/save")
   public Product save(@RequestBody Product product){
     return service.save(product);
   }
@@ -68,7 +68,7 @@ public class ProductController {
     return service.getAllActiveProductsQuantity();
   }
 
-  @GetMapping("/total/price")
+  @GetMapping("/total-price")
   public BigDecimal getTotalPrice(){
     return service.getAllActiveProductsTotalPrice();
   }
