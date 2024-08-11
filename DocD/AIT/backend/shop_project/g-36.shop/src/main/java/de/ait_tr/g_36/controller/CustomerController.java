@@ -34,7 +34,7 @@ public class CustomerController {
     return service.saveCustomer(customer);
   }
 
-  @GetMapping
+  @GetMapping("/read")
   public List<Customer> getCustomer(@RequestParam(required = false) Long id) {
     if (id == null) {
       return service.getAllCustomers();
@@ -83,15 +83,14 @@ public class CustomerController {
 
   @PostMapping("/cart/add")
   public Customer addProductToCart(@RequestBody Customer customer) {
-    return null;
+    return customer;
   }
   @DeleteMapping("/cart/delete")
-  public void deleteProductFromCart(@RequestParam Long Id, @RequestParam(required = false) Long productId) {
+  public void deleteProductFromCart(@RequestParam Long id, @RequestParam(required = false) Long productId) {
 //    if (productId == null) {
 //      service.deleteProductsAllFromCart(id);
 //    } else {
 //      service.deleteProductByIdFromCart(id, productId);
 //    }
-
   }
 }
