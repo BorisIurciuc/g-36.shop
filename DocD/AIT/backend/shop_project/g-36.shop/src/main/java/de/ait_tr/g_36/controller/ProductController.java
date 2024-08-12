@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/products")
 public class ProductController {
 
+  //DI
   private final ProductService service;
 
   public ProductController(ProductService service) {
@@ -28,12 +29,12 @@ public class ProductController {
   }
 
   // CRUD - Create(POST), Read (GET), Update (PUT), Delete (DELETE)
-  @PostMapping("/save")
+  @PostMapping
   public Product save(@RequestBody Product product){
     return service.save(product);
   }
 
-  @GetMapping()
+  @GetMapping
   public List<Product> get(@RequestParam(required = false) Long id) {
     //TODO обращаемся к серверу
     if (id == null) {

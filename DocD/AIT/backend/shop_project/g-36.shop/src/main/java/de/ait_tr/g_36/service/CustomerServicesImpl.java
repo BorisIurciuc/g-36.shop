@@ -9,68 +9,69 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomerServicesImpl implements CustomerServices {
 
+
   @Override
-  public Customer saveCustomer(Customer customer) {
-    return customer;
+  public Customer save(Customer customer) {
+    return null;
   }
 
   @Override
-  public List<Customer> getAllCustomers() {
+  public List<Customer> getAllActiveCustomers() {
     return List.of();
   }
 
   @Override
-  public Customer getCustomerById(Long id) {
+  public Customer getById(Long id) {
     return null;
   }
 
   @Override
-  public Customer updateCustomer(Customer customer) {
-    return customer;
+  public Customer update(Customer customer) {
+    return null;
   }
 
   @Override
-  public void deleteCustomerById(Long id) {
-
-  }
-
-  @Override
-  public void deleteCustomerByName(String name) {
+  public void deleteById(Long id) {
 
   }
 
   @Override
-  public void restoreCustomer(Long id) {
+  public void deleteByName(String name) {
 
   }
 
   @Override
-  public long getAllActiveCustomersQuantity() {
+  public void restoreById(Long id) {
+
+  }
+
+  @Override
+  public long getActiveCustomersNumber() {
     return 0;
   }
 
   @Override
-  public BigDecimal getCustomerCartPriceTotalById(Long id) {
+  public BigDecimal getTotalCostOfCustomersProduct(Long customerId) {
     return null;
   }
 
   @Override
-  public BigDecimal getCustomerCartPriceAverageById(Long id) {
+  public BigDecimal getAverageCostOfCustomersProduct(Long customerId) {
     return null;
   }
 
   @Override
-  public Customer addProductToCart(Customer customer) {
+  public Customer addProductToCustomersCart(Long customerId, Long productId) {
     return null;
   }
 
   @Override
-  public void deleteProductByIdFromCart(Customer customer) {
+  public void removeProductFromCustomersCart(Long customerId, Long productId) {
 
   }
 
   @Override
-  public void deleteProductsAllFromCart(Customer customer) {
+  public void clearCustomersCart(Long customerId) {
 
   }
 }

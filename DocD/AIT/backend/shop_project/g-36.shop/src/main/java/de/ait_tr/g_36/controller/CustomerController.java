@@ -30,16 +30,16 @@ public class CustomerController {
   }
 
   @PostMapping("/save")
-  public Customer saveCustomer(@RequestBody Customer customer) {
-    return service.saveCustomer(customer);
+  public Customer save(@RequestBody Customer customer) {
+    return service.save(customer);
   }
 
   @GetMapping("/read")
-  public List<Customer> getCustomer(@RequestParam(required = false) Long id) {
+  public List<Customer> get(@RequestParam(required = false) Long id) {
     if (id == null) {
-      return service.getAllCustomers();
+      return service.getAllActiveCustomers();
     } else {
-      Customer customer = service.getCustomerById(id);
+      Customer customer = service.getById(id);
       if (customer == null) {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found");
       }
@@ -48,49 +48,49 @@ public class CustomerController {
   }
 
   @PutMapping("/update")
-  public Customer updateCustomer(@RequestBody Customer customer) {
-    return service.updateCustomer(customer);
+  public Customer update(@RequestBody Customer customer) {
+    return service.update(customer);
   }
 
   @DeleteMapping("/delete")
   public void deleteCustomer(@RequestParam(required = false) Long id, @RequestParam(required = false) String name) {
     if (id != null) {
-      service.deleteCustomerById(id);
+      service.deleteById(id);
     } else if (name != null) {
-      service.deleteCustomerByName(name);
+      service.deleteByName(name);
     }
   }
 
   @PutMapping("/restore")
-  public void restoreCustomer(@RequestParam Long id) {
-    service.restoreCustomer(id);
+  public void restoreById(@RequestParam Long id) {
+    service.restoreById(id);
   }
 
   @GetMapping("/quantity")
-  public long getAllActiveCustomersQuantity() {
-    return service.getAllActiveCustomersQuantity();
+  public long getActiveCustomersNumber() {
+    return service.getActiveCustomersNumber();
   }
 
   @GetMapping("/total-price")
-  public BigDecimal getCustomerCartPriceTotalById(@RequestParam Long id) {
-    return service.getCustomerCartPriceTotalById(id);
+  public BigDecimal getTotalCostOfCustomersProduct(@RequestParam Long id) {
+    return service.getTotalCostOfCustomersProduct(id);
   }
 
   @GetMapping("/avarage-price")
   public BigDecimal getCustomerCartPriceAverageById(@RequestParam Long id) {
-    return service.getCustomerCartPriceAverageById(id);
+    return service.getAverageCostOfCustomersProduct(id);
   }
 
   @PostMapping("/cart/add")
-  public Customer addProductToCart(@RequestBody Customer customer) {
+  public Customer addProductToCustomersCart(@RequestBody Customer customer) {
     return customer;
   }
-  @DeleteMapping("/cart/delete")
-  public void deleteProductFromCart(@RequestParam Long id, @RequestParam(required = false) Long productId) {
+//  @DeleteMapping("/cart/delete")
+//  public void delete(@RequestParam Long id, @RequestParam(required = false) Long productId) {
 //    if (productId == null) {
 //      service.deleteProductsAllFromCart(id);
 //    } else {
 //      service.deleteProductByIdFromCart(id, productId);
 //    }
-  }
+//  }
 }

@@ -8,19 +8,19 @@ import java.util.List;
 
 public interface CustomerServices {
 
-  Customer saveCustomer(Customer customer);
-  List<Customer> getAllCustomers();
-  Customer getCustomerById(Long id);
-  Customer updateCustomer(Customer customer);
-  void deleteCustomerById(Long id);
-  void deleteCustomerByName(String name);
-  void restoreCustomer(Long id);
-  long getAllActiveCustomersQuantity();
-  BigDecimal getCustomerCartPriceTotalById(Long id);
-  BigDecimal getCustomerCartPriceAverageById(Long id);
-  Customer addProductToCart(Customer customer);
-  void deleteProductByIdFromCart(Customer customer);
-  void deleteProductsAllFromCart(Customer customer);
+  Customer save(Customer customer);
+  List<Customer> getAllActiveCustomers();
+  Customer getById(Long id);
+  Customer update(Customer customer);
+  void deleteById(Long id);
+  void deleteByName(String name);
+  void restoreById(Long id);
+  long getActiveCustomersNumber();
+  BigDecimal getTotalCostOfCustomersProduct(Long customerId);
+  BigDecimal getAverageCostOfCustomersProduct(Long customerId);
+  Customer addProductToCustomersCart(Long customerId, Long productId);
+  void removeProductFromCustomersCart(Long customerId, Long productId);
+  void clearCustomersCart(Long customerId);
 }
 
 /**

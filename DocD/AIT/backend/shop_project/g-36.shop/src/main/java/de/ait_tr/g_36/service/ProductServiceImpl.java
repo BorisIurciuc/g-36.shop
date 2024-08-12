@@ -1,30 +1,42 @@
 package de.ait_tr.g_36.service;
 
 import de.ait_tr.g_36.domain.entity.Product;
+import de.ait_tr.g_36.repository.ProductRepository;
 import de.ait_tr.g_36.service.interfaces.ProductService;
-import java.math.BigDecimal;
-import java.util.List;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.List;
 
-/**
- * 09/08/2024 g-36.shop * @author Boris Iurciuc (cohort36)
- */
 @Service
 public class ProductServiceImpl implements ProductService {
 
+  private ProductRepository repository;
+
+  public ProductServiceImpl(ProductRepository repository) {
+    this.repository = repository;
+  }
+
   @Override
   public Product save(Product product) {
-    return product;
+    return repository.save(product);
   }
 
   @Override
   public List<Product> getAllProducts() {
-    return List.of();
+    return repository.findAll()
+        .stream()
+        .filter(Product::isActive)
+        .toList();
   }
 
-  @Override
+
+   @Override
   public Product getById(Long id) {
+    Product product = repository.findById(id).orElse(null);
+    if(product != null && product.isActive()){
+      return product;
+    }
     return null;
   }
 

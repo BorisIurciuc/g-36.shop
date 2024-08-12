@@ -1,15 +1,14 @@
-package de.ait_tr.g_36.shop;
+package de.ait_tr.g_36;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "de.ait_tr.g_36")
-public class Application {
+public class ShopApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(ShopApplication.class, args);
 	}
 
 }

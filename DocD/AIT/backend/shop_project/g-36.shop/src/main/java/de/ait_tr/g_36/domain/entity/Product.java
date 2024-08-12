@@ -1,6 +1,9 @@
 package de.ait_tr.g_36.domain.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
@@ -10,13 +13,21 @@ import java.util.Objects;
  * 07/08/2024 g-36.shop * @author Boris Iurciuc (cohort36)
  */
 @Entity
-//@Table(name = "product")
+@Table(name = "product")
 public class Product {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
   private Long id;
+
+  @Column(name = "title")
   private String title;
+
+  @Column(name = "price")
   private BigDecimal price;
+
+  @Column(name = "active")
   private boolean active;
 
   public void setId(Long id) {
