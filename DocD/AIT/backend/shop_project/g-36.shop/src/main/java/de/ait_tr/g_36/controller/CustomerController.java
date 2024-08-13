@@ -29,12 +29,12 @@ public class CustomerController {
     return "CustomerController is working";
   }
 
-  @PostMapping("/save")
+  @PostMapping
   public Customer save(@RequestBody Customer customer) {
     return service.save(customer);
   }
 
-  @GetMapping("/read")
+  @GetMapping
   public List<Customer> get(@RequestParam(required = false) Long id) {
     if (id == null) {
       return service.getAllActiveCustomers();
