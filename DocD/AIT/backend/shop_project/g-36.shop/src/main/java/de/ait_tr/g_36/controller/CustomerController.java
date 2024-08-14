@@ -1,7 +1,7 @@
 package de.ait_tr.g_36.controller;
 
 import de.ait_tr.g_36.domain.entity.Customer;
-import de.ait_tr.g_36.service.interfaces.CustomerServices;
+import de.ait_tr.g_36.service.interfaces.CustomerService;
 import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -18,9 +18,9 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @RequestMapping("/customers")
 public class CustomerController {
-  private final CustomerServices service;
+  private final CustomerService service;
 
-  public CustomerController(CustomerServices service) {
+  public CustomerController(CustomerService service) {
     this.service = service;
   }
 

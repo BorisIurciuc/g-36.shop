@@ -2,17 +2,17 @@ package de.ait_tr.g_36.service;
 
 import de.ait_tr.g_36.domain.entity.Customer;
 import de.ait_tr.g_36.repository.CustomerRepository;
-import de.ait_tr.g_36.service.interfaces.CustomerServices;
+import de.ait_tr.g_36.service.interfaces.CustomerService;
 import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomerServicesImpl implements CustomerServices {
+public class CustomerServiceImpl implements CustomerService {
 
   private CustomerRepository repository;
 
-  public CustomerServicesImpl(CustomerRepository repository) {
+  public CustomerServiceImpl(CustomerRepository repository) {
     this.repository = repository;
   }
 
