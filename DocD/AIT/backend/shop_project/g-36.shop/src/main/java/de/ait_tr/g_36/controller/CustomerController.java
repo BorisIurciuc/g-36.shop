@@ -1,5 +1,6 @@
 package de.ait_tr.g_36.controller;
 
+import de.ait_tr.g_36.domain.dto.CustomerDto;
 import de.ait_tr.g_36.domain.entity.Customer;
 import de.ait_tr.g_36.service.interfaces.CustomerService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,18 +37,18 @@ public class CustomerController {
   }
 
   @PostMapping
-  public Customer save(@RequestBody
+  public CustomerDto save(@RequestBody
                       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Instance of a Customer")
-                      Customer customer) {
+                      CustomerDto customer) {
     return service.save(customer);
   }
 
   @GetMapping
-  public List<Customer> get(@RequestParam(required = false) Long id) {
+  public List<CustomerDto> get(@RequestParam(required = false) Long id) {
     if (id == null) {
       return service.getAllActiveCustomers();
     } else {
-      Customer customer = service.getById(id);
+      CustomerDto customer = service.getById(id);
       if (customer == null) {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found");
       }
@@ -56,7 +57,7 @@ public class CustomerController {
   }
 
   @PutMapping("/update")
-  public Customer update(@RequestBody Customer customer) {
+  public CustomerDto update(@RequestBody CustomerDto customer) {
     return service.update(customer);
   }
 

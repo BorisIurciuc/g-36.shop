@@ -1,4 +1,4 @@
-package de.ait_tr.g_36.domain.entity;
+package de.ait_tr.g_36.domain.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
@@ -13,14 +13,9 @@ import java.util.Objects;
  * 10/08/2024 g-36.shop * @author Boris Iurciuc (cohort36)
  */
 
-@Entity
-@Table(name = "customer")
 @Schema(description = "Class that describes Customer")
-public class Customer {
+public class CustomerDto {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
   @Schema( // add for Swagger
       description = "Customer unique identifier",
       example = "111",
@@ -28,12 +23,10 @@ public class Customer {
   )
   private Long id;
 
-  @Column(name = "name")
   @Schema(description = "Customer name", example = "Jon") // add for Swagger
   private String name;
 
-  @Column(name = "active")
-  private boolean active;
+  //private boolean active;
 
   public Long getId() {
     return id;
@@ -51,23 +44,16 @@ public class Customer {
     this.name = name;
   }
 
-  public boolean isActive() {
-    return active;
-  }
-
-  public void setActive(boolean active) {
-    this.active = active;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof Customer customer)) {
+    if (!(o instanceof CustomerDto that)) {
       return false;
     }
-    return Objects.equals(getId(), customer.getId());
+    return Objects.equals(getId(), that.getId()) && Objects.equals(getName(),
+        that.getName());
   }
 
   @Override
@@ -78,7 +64,7 @@ public class Customer {
   @Override
   public String toString() {
     return String.format("Customer: id - %d, name - %s, active - %s",
-        id, name, active ? "yes" : "no");
+        id, name);
   }
 
 

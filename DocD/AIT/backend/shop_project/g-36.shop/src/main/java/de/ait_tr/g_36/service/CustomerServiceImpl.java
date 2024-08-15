@@ -1,8 +1,10 @@
 package de.ait_tr.g_36.service;
 
+import de.ait_tr.g_36.domain.dto.CustomerDto;
 import de.ait_tr.g_36.domain.entity.Customer;
 import de.ait_tr.g_36.repository.CustomerRepository;
 import de.ait_tr.g_36.service.interfaces.CustomerService;
+import de.ait_tr.g_36.service.mapping.CustomerMappingService;
 import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -11,35 +13,39 @@ import org.springframework.stereotype.Service;
 public class CustomerServiceImpl implements CustomerService {
 
   private CustomerRepository repository;
+  private CustomerMappingService mappingService;
 
-  public CustomerServiceImpl(CustomerRepository repository) {
+  public CustomerServiceImpl(CustomerRepository repository, CustomerMappingService mappingService) {
     this.repository = repository;
+    this.mappingService = mappingService;
   }
 
   @Override
-  public Customer save(Customer customer) {
-    return repository.save(customer);
+  public CustomerDto save(CustomerDto dto) {
+    Customer entity = mappingService.mapDtoToEntity(dto);
+    repository.save(entity);
+    return mappingService.mapEntityToDto(entity);
   }
 
   @Override
-  public List<Customer> getAllActiveCustomers() {
+  public List<CustomerDto> getAllActiveCustomers() {
     return repository.findAll()
         .stream()
-        .filter(Customer::isActive)
+        .map(mappingService::mapEntityToDto)
         .toList();
   }
 
   @Override
-  public Customer getById(Long id) {
+  public CustomerDto getById(Long id) {
     Customer customer = repository.findById(id).orElse(null);
       if(customer != null && customer.isActive()) {
-        return customer;
+        return mappingService.mapEntityToDto(customer);
       }
     return null;
   }
 
   @Override
-  public Customer update(Customer customer) {
+  public CustomerDto update(CustomerDto customer) {
     return null;
   }
 
