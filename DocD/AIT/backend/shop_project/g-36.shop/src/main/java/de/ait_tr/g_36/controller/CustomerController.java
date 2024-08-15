@@ -2,6 +2,7 @@ package de.ait_tr.g_36.controller;
 
 import de.ait_tr.g_36.domain.entity.Customer;
 import de.ait_tr.g_36.service.interfaces.CustomerService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,12 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/customers")
+@Tag(
+    name = "Customer controller",
+    description = "Controller for various operations with Customer"
+) // add for Swagger
 public class CustomerController {
+
   private final CustomerService service;
 
   public CustomerController(CustomerService service) {
@@ -30,7 +36,9 @@ public class CustomerController {
   }
 
   @PostMapping
-  public Customer save(@RequestBody Customer customer) {
+  public Customer save(@RequestBody
+                      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Instance of a Customer")
+                      Customer customer) {
     return service.save(customer);
   }
 
@@ -53,7 +61,8 @@ public class CustomerController {
   }
 
   @DeleteMapping("/delete")
-  public void deleteCustomer(@RequestParam(required = false) Long id, @RequestParam(required = false) String name) {
+  public void deleteCustomer(@RequestParam(required = false) Long id,
+      @RequestParam(required = false) String name) {
     if (id != null) {
       service.deleteById(id);
     } else if (name != null) {

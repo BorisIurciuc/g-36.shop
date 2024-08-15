@@ -1,4 +1,4 @@
-package de.ait_tr.g_36.domain.entity;
+package de.ait_tr.g_36.domain.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
@@ -13,14 +13,9 @@ import java.util.Objects;
 /**
  * 07/08/2024 g-36.shop * @author Boris Iurciuc (cohort36)
  */
-@Entity
-@Table(name = "product")
 @Schema(description = "Class that describes Product") // add for Swagger
-public class Product {
+public class ProductDto {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
   @Schema( // add for Swagger
       description = "Product unique identifier",
       example = "111",
@@ -28,16 +23,13 @@ public class Product {
   )
   private Long id;
 
-  @Column(name = "title")
   @Schema(description = "Product title", example = "banana") // add for Swagger
   private String title;
 
-  @Column(name = "price")
   @Schema(description = "Product price", example = "190.00") // add for Swagger
   private BigDecimal price;
 
-  @Column(name = "active")
-  private boolean active;
+  //private boolean active;
 
   public void setId(Long id) {
     this.id = id;
@@ -63,34 +55,36 @@ public class Product {
     this.price = price;
   }
 
-  public boolean isActive() {
-    return active;
-  }
+//  public boolean isActive() {
+//    return active;
+//  }
 
-  public void setActive(boolean active) {
-    this.active = active;
-  }
+//  public void setActive(boolean active) {
+//    this.active = active;
+//  }
+
 
   @Override
   public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof Product product)) {
+    if (!(o instanceof ProductDto that)) {
       return false;
     }
-    return Objects.equals(getId(), product.getId());
+    return Objects.equals(getId(), that.getId()) && Objects.equals(getTitle(),
+        that.getTitle()) && Objects.equals(getPrice(), that.getPrice());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(getId());
+    return Objects.hash(getId(), getTitle(), getPrice());
   }
 
   @Override
   public String toString() {
     return String.format("Product: id - %d, title - %s, price - %s, active - %s",
-        id, title, price, active ? "yes" : "no");
+        id, title, price);
   }
 
 

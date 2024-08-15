@@ -1,7 +1,9 @@
 package de.ait_tr.g_36.controller;
 
+import de.ait_tr.g_36.domain.dto.ProductDto;
 import de.ait_tr.g_36.domain.entity.Product;
 import de.ait_tr.g_36.service.interfaces.ProductService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/products")
+@Tag(
+    name = "Product controller",
+    description = "Controller for various operations with Products"
+) // add for Swagger
 public class ProductController {
 
   //DI
@@ -30,23 +36,26 @@ public class ProductController {
 
   // CRUD - Create(POST), Read (GET), Update (PUT), Delete (DELETE)
   @PostMapping
-  public Product save(@RequestBody Product product){
+  public ProductDto save(@RequestBody
+                      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Instance of a Product")
+                      ProductDto product
+  ){
     return service.save(product);
   }
 
   @GetMapping
-  public List<Product> get(@RequestParam(required = false) Long id) {
+  public List<ProductDto> get(@RequestParam(required = false) Long id) {
     //TODO обращаемся к серверу
     if (id == null) {
       return service.getAllProducts();
     } else {
-      Product product = service.getById(id);
+      ProductDto product = service.getById(id);
       return product == null ? null : List.of(product);
     }
   }
 
   @PutMapping
-  public Product update(@RequestBody Product product){
+  public ProductDto update(@RequestBody ProductDto product){
     return service.update(product);
   }
 
