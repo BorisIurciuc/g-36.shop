@@ -7,11 +7,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
-/**
- * 14/08/2024 g-36.shop
- *
- * @author Boris Iurciuc (cohort36)
- */
 @Service
 public class CartServiceImpl implements CartService {
 

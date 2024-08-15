@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-  private CustomerRepository repository;
-  private CustomerMappingService mappingService;
+  private final CustomerRepository repository;
+  private final CustomerMappingService mappingService;
 
   public CustomerServiceImpl(CustomerRepository repository, CustomerMappingService mappingService) {
     this.repository = repository;

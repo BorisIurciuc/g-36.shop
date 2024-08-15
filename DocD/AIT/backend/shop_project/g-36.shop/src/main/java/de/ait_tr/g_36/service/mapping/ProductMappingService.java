@@ -6,11 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.stereotype.Service;
 
-/**
- * 14/08/2024 g-36.shop * @author Boris Iurciuc (cohort36)
- */
 
-@Service
 @Mapper(componentModel = "spring")
 public interface ProductMappingService {
 

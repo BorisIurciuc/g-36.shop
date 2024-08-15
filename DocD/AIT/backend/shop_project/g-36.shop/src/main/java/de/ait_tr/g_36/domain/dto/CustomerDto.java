@@ -66,6 +66,4 @@ public class CustomerDto {
     return String.format("Customer: id - %d, name - %s, active - %s",
         id, name);
   }
-
-
 }
