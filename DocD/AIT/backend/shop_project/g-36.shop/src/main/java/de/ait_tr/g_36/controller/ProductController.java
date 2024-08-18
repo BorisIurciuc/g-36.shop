@@ -3,6 +3,8 @@ package de.ait_tr.g_36.controller;
 import de.ait_tr.g_36.domain.dto.ProductDto;
 import de.ait_tr.g_36.domain.entity.Product;
 import de.ait_tr.g_36.service.interfaces.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.math.BigDecimal;
 import java.util.List;
@@ -34,7 +36,17 @@ public class ProductController {
     this.service = service;
   }
 
+  @GetMapping("/test")
+  public String test() {
+    return "ProductController is working";
+  }
+
   // CRUD - Create(POST), Read (GET), Update (PUT), Delete (DELETE)
+  // Три уровня доступа к приложению:
+  // 1. Получить все продукты могут все пользователи, в том числе анонимные
+  // 2. Получить продукт по идентификатору могут только аутентифицированные пользователи с любой ролью
+  // 3. Сохранить продукт в базу данных может только администратор
+
   @PostMapping
   public ProductDto save(@RequestBody
                       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Instance of a Product")
@@ -42,16 +54,32 @@ public class ProductController {
   ){
     return service.save(product);
   }
-
+  // Read: GET -> localhost:8080/products?id=3
+  @Operation(
+      summary = "Get product by id",
+      description = "Getting one product that exists in the database by its id"
+  )
   @GetMapping
-  public List<ProductDto> get(@RequestParam(required = false) Long id) {
-    //TODO обращаемся к серверу
-    if (id == null) {
-      return service.getAllProducts();
-    } else {
-      ProductDto product = service.getById(id);
-      return product == null ? null : List.of(product);
-    }
+  public ProductDto getById(
+      @RequestParam
+      @Parameter(description = "Product unique identifier")
+      Long id
+  ) {
+    return service.getById(id);
+  }
+//  public List<ProductDto> get(@RequestParam(required = false) Long id) {
+//    //TODO обращаемся к серверу
+//    if (id == null) {
+//      return service.getAllProducts();
+//    } else {
+//      ProductDto product = service.getById(id);
+//      return product == null ? null : List.of(product);
+//    }
+//  }
+
+  @GetMapping("/all")
+  public List<ProductDto> getAll() {
+    return service.getAllProducts();
   }
 
   @PutMapping
