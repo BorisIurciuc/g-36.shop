@@ -26,7 +26,7 @@ public class SecurityConfig {
   public BCryptPasswordEncoder encoder() {
     return new BCryptPasswordEncoder();
   }
-
+  @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception  {
     return http
         .csrf(AbstractHttpConfigurer::disable)
@@ -35,11 +35,9 @@ public class SecurityConfig {
         .httpBasic(Customizer.withDefaults())
         .authorizeHttpRequests(x -> x
             .requestMatchers(HttpMethod.GET, "/products/test").permitAll()
-//            .requestMatchers(HttpMethod.GET, "/products/all").permitAll()
-//            .requestMatchers(HttpMethod.GET, "/products").hasAnyRole("ROLE-ADMIN", "ROLE-USER")
-//            .requestMatchers(HttpMethod.POST, "/products").hasRole("ROLE-ADMIN")
+            .requestMatchers(HttpMethod.GET, "/products/all").permitAll()
+            .requestMatchers(HttpMethod.GET, "/products").hasAnyRole("ADMIN", "USER")
+            .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
         ).build();
-
   }
-
 }
