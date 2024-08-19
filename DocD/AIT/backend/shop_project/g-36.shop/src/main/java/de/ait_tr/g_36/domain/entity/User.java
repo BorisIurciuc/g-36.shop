@@ -26,22 +26,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class User implements UserDetails {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.IDENTITY )
   @Column(name = "id")
   private Long id;
 
-  @Column(name = "username")
-  private  String username;
+  @Column(name = "user")
+  private String username;
 
   @Column(name = "password")
-  private  String password;
+  private String password;
 
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.EAGER) // "жадная" загрузка из БД
   @JoinTable(name = "user_role",
       joinColumns = @JoinColumn(name = "user_id"),
       inverseJoinColumns = @JoinColumn(name = "role_id")
   )
-
   private Set<Role> roles;
 
   public Long getId() {
@@ -51,64 +50,62 @@ public class User implements UserDetails {
   public void setId(Long id) {
     this.id = id;
   }
-  @Override
-  public String getUsername() {
+
+  public String getName() {
     return username;
   }
 
-  public void setUsername(String username) {
+  public void setName(String username) {
     this.username = username;
   }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of();
+    return roles;
   }
+
   @Override
   public String getPassword() {
     return password;
+  }
+
+  @Override
+  public String getUsername() {
+    return "";
   }
 
   public void setPassword(String password) {
     this.password = password;
   }
 
-  public Set<Role> getRoles() {
+  public Set<Role> getRole() {
     return roles;
   }
 
-  public void setRoles(Set<Role> roles) {
+  public void setRole(Set<Role> role) {
     this.roles = roles;
   }
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o instanceof User user)) {
-      return false;
-    }
-    return Objects.equals(getId(), user.getId()) && Objects.equals(getUsername(),
-        user.getUsername()) && Objects.equals(getPassword(), user.getPassword())
-        && Objects.equals(getRoles(), user.getRoles());
+    if (this == o) return true;
+    if (!(o instanceof User user)) return false;
+    return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(roles, user.roles);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getId(), getUsername(), getPassword(), getRoles());
+    return Objects.hash(id, username, password, roles);
   }
 
   @Override
   public String toString() {
-    return String.format("User: id=%d, username=%s, roles=%s",
-        id, username, roles == null ? "empty" : roles);
-  }
-     //Метод для получения зашифрованного пароля
-     //для добавления пользователей в БД вручную
-
-  public static void main(String[] args) {
-    System.out.println(new BCryptPasswordEncoder().encode("111"));
+    return String.format("User: id - %d, username - %s, roles - %s", id, username, roles == null ? "empty" : roles);
   }
 
+//     Метод для получения зашифрованного пароля
+//     для добавления пользователей в БД вручную
+//    public static void main(String[] args) {
+//        System.out.println(new BCryptPasswordEncoder().encode("111"));
+//    }
 }

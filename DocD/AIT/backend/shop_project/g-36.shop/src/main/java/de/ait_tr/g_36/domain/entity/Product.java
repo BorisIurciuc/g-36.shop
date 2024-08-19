@@ -39,10 +39,6 @@ public class Product {
   @Column(name = "active")
   private boolean active;
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
   public Long getId() {
     return id;
   }
@@ -51,20 +47,24 @@ public class Product {
     return title;
   }
 
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
   public BigDecimal getPrice() {
     return price;
   }
 
-  public void setPrice(BigDecimal price) {
-    this.price = price;
-  }
-
   public boolean isActive() {
     return active;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public void setPrice(BigDecimal price) {
+    this.price = price;
   }
 
   public void setActive(boolean active) {
@@ -73,18 +73,15 @@ public class Product {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o instanceof Product product)) {
-      return false;
-    }
-    return Objects.equals(getId(), product.getId());
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Product product = (Product) o;
+    return active == product.active && Objects.equals(id, product.id) && Objects.equals(title, product.title) && Objects.equals(price, product.price);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(getId());
+    return Objects.hash(id, title, price, active);
   }
 
   @Override
@@ -92,6 +89,4 @@ public class Product {
     return String.format("Product: id - %d, title - %s, price - %s, active - %s",
         id, title, price, active ? "yes" : "no");
   }
-
-
 }

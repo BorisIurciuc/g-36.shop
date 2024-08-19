@@ -48,7 +48,8 @@ public class ProductController {
   // 3. Сохранить продукт в базу данных может только администратор
 
   @PostMapping
-  public ProductDto save(@RequestBody
+  public ProductDto save(
+                      @RequestBody
                       @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Instance of a Product")
                       ProductDto product
   ){
