@@ -5,17 +5,14 @@ import de.ait_tr.g_36.security.sec_dto.RefreshRequestDto;
 import de.ait_tr.g_36.security.sec_dto.TokenResponseDto;
 import de.ait_tr.g_36.security.security_service.AuthService;
 import jakarta.security.auth.message.AuthException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
-/**
- * 20/08/2024 g-36.shop
- *
- * @author Boris Iurciuc (cohort36)
- */
+
+@RestController
+@RequestMapping("/auth")
 public class AuthController {
 
-  private AuthService service;
+  private final AuthService service;
 
   public AuthController(AuthService service) {
     this.service = service;
@@ -39,4 +36,5 @@ public class AuthController {
       throw new RuntimeException(e);
     }
   }
+
 }

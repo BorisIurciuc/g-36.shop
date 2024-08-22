@@ -5,16 +5,14 @@ import de.ait_tr.g_36.security.sec_dto.TokenResponseDto;
 import de.ait_tr.g_36.service.UserService;
 import io.jsonwebtoken.Claims;
 import jakarta.security.auth.message.AuthException;
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
-/**
- * 20/08/2024 g-36.shop
- *
- * @author Boris Iurciuc (cohort36)
- */
+import java.util.HashMap;
+import java.util.Map;
+
+@Service
 public class AuthService {
 
   // fields
@@ -59,5 +57,4 @@ public class AuthService {
     }
     throw new AuthException("Refresh token is incorrect");
   }
-
 }

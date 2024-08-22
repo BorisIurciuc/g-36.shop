@@ -1,18 +1,14 @@
 package de.ait_tr.g_36.security;
 
 import de.ait_tr.g_36.domain.entity.Role;
-import java.util.Collection;
-import java.util.Set;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
-/**
- * 20/08/2024 g-36.shop
- *
- * @author Boris Iurciuc (cohort36)
- */
-public class AuthInfo implements Authentication {
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
+public class AuthInfo implements Authentication {
 
   // current user info for Spring Security Context
   //fields

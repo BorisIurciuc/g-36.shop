@@ -2,16 +2,11 @@ package de.ait_tr.g_36.security.sec_dto;
 
 import java.util.Objects;
 
-/**
- * 20/08/2024 g-36.shop
- *
- * @author Boris Iurciuc (cohort36)
- */
 public class TokenResponseDto {
 
   // fields
-  private String accessToken;
-  private String refreshToken;
+  private final String accessToken;
+  private final String refreshToken;
 
   // constructor
   public TokenResponseDto(String accessToken, String refreshToken) {

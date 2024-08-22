@@ -7,28 +7,20 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
+import javax.crypto.SecretKey;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Set;
-import javax.crypto.SecretKey;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+import java.util.*;
 
-/**
- * 20/08/2024 g-36.shop
- *
- * @author Boris Iurciuc (cohort36)
- */
-@Component
-public class TokenService {
+@Service
+public class TokenService  {
 
+  //fields
   private SecretKey accessKey;
   private SecretKey refreshKey;
   private RoleRepository roleRepository;

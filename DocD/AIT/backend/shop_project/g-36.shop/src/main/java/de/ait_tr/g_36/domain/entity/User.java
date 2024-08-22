@@ -71,7 +71,15 @@ public class User implements UserDetails {
 
   @Override
   public String getUsername() {
-    return "";
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public void setRoles(Set<Role> roles) {
+    this.roles = roles;
   }
 
   public void setPassword(String password) {

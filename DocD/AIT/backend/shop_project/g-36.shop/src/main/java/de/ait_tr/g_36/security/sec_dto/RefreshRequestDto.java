@@ -2,11 +2,6 @@ package de.ait_tr.g_36.security.sec_dto;
 
 import java.util.Objects;
 
-/**
- * 20/08/2024 g-36.shop
- *
- * @author Boris Iurciuc (cohort36)
- */
 public class RefreshRequestDto {
   //field
   private String refreshToken;
