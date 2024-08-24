@@ -156,6 +156,16 @@ class ProductControllerTest {
     userAccessToken = BEARER_PREFIX + response.getBody().getAccessToken();
   }
 
+
+  @Test
+  public void testUserRolesLoading() {
+    User admin = userRepository.findByUsername(TEST_ADMIN_NAME).orElse(null);
+    assertNotNull(admin, "Admin user not found");
+    assertFalse(admin.getRoles().isEmpty(), "Admin roles are empty");
+    assertTrue(admin.getRoles().stream().anyMatch(role -> role.getTitle().equals(ADMIN_ROLE_TITLE)),
+        "Admin doesn't have ADMIN role");
+  }
+
   @Test
   public void positiveGettingAllProductsWithoutAuthorization(){
     String url = URL_PREFIX + port + PRODUCTS_RESOURCE + ALL_ENDPOINT;
@@ -191,7 +201,6 @@ class ProductControllerTest {
             request,
             ProductDto.class);
     assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode(), "Response has unexpected status");
-
   }
 
   @Test
@@ -259,7 +268,7 @@ class ProductControllerTest {
     headers.put(AUTH_HEADER_NAME, List.of(userAccessToken));
 
     Long productId = 1L;
-    String url = URL_PREFIX + port + PRODUCTS_RESOURCE + "/" + productId;
+    String url = URL_PREFIX + port + PRODUCTS_RESOURCE + "?=" + productId;
     HttpEntity<Void> request = new HttpEntity<>(headers);
 
     ResponseEntity<ProductDto> response = template.exchange(
@@ -268,6 +277,10 @@ class ProductControllerTest {
         request,
         ProductDto.class
     );
+
+    System.out.println("Admin Token: " + adminAccessToken);
+    System.out.println("User Token: " + userAccessToken);
+    //System.out.println("User roles: " + user.getRoles());
 
     assertEquals(HttpStatus.OK, response.getStatusCode(), "Unexpected response status");
     assertTrue(response.hasBody(), "Response body is empty");

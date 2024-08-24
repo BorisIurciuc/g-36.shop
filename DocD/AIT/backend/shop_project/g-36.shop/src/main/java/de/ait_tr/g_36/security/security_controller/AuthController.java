@@ -20,7 +20,7 @@ public class AuthController {
 
   //endpoint для аутентификации пользователя
   @PostMapping("/login")
-  public TokenResponseDto login(@RequestBody User user) throws AuthException {
+  public TokenResponseDto login(@RequestBody User user) {
     try {
       return service.login(user);
     } catch (AuthException e) {

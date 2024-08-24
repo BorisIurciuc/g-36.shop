@@ -1,7 +1,6 @@
 package de.ait_tr.g_36.controller;
 
 import de.ait_tr.g_36.domain.dto.ProductDto;
-import de.ait_tr.g_36.domain.entity.Product;
 import de.ait_tr.g_36.service.interfaces.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

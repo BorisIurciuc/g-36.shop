@@ -21,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
   // field - наш собственный фильтр
-  private TokenFilter filter;
+  private final TokenFilter filter;
 
   // constructor
   public SecurityConfig(TokenFilter filter) {

@@ -1,7 +1,6 @@
 package de.ait_tr.g_36.controller;
 
 import de.ait_tr.g_36.domain.entity.Cart;
-import de.ait_tr.g_36.domain.entity.Product;
 import de.ait_tr.g_36.service.interfaces.CartService;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;

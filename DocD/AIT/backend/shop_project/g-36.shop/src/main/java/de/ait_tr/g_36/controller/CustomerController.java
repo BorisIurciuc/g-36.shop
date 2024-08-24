@@ -96,12 +96,14 @@ public class CustomerController {
   public Customer addProductToCustomersCart(@RequestBody Customer customer) {
     return customer;
   }
-//  @DeleteMapping("/cart/delete")
-//  public void delete(@RequestParam Long id, @RequestParam(required = false) Long productId) {
-//    if (productId == null) {
-//      service.deleteProductsAllFromCart(id);
-//    } else {
-//      service.deleteProductByIdFromCart(id, productId);
-//    }
-//  }
+  /**
+  @DeleteMapping("/cart/delete")
+  public void delete(@RequestParam Long id, @RequestParam(required = false) Long productId) {
+    if (productId == null) {
+      service.deleteProductsAllFromCart(id);
+    } else {
+      service.deleteProductByIdFromCart(id, productId);
+    }
+  }
+   */
 }

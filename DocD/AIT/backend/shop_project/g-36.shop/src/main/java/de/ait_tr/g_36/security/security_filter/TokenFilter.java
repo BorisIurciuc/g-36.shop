@@ -8,7 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.converter.StringHttpMessageConverter;
+//import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
@@ -18,12 +18,12 @@ import java.io.IOException;
 @Component
 public class TokenFilter extends GenericFilterBean {
 
-  private final StringHttpMessageConverter stringHttpMessageConverter;
-  private TokenService service;
+ // private final StringHttpMessageConverter stringHttpMessageConverter;
+  private final TokenService service;
 
-  public TokenFilter(TokenService service, StringHttpMessageConverter stringHttpMessageConverter) {
+  public TokenFilter(TokenService service) {
     this.service = service;
-    this.stringHttpMessageConverter = stringHttpMessageConverter;
+    //this.stringHttpMessageConverter = stringHttpMessageConverter;
   }
 
   // фильтр

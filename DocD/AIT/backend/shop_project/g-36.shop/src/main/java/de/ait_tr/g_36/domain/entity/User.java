@@ -1,26 +1,15 @@
 package de.ait_tr.g_36.domain.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-/**
- * 17/08/2024 g-36.shop * @author Boris Iurciuc (cohort36)
- */
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+
 @Entity
 @Table(name = "user")
 public class User implements UserDetails {
@@ -42,6 +31,14 @@ public class User implements UserDetails {
       inverseJoinColumns = @JoinColumn(name = "role_id")
   )
   private Set<Role> roles;
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public void setRoles(Set<Role> roles) {
+    this.roles = roles;
+  }
 
   public Long getId() {
     return id;
@@ -72,14 +69,6 @@ public class User implements UserDetails {
   @Override
   public String getUsername() {
     return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public void setRoles(Set<Role> roles) {
-    this.roles = roles;
   }
 
   public void setPassword(String password) {
