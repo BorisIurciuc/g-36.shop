@@ -12,36 +12,28 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-  private final CustomerRepository repository;
-  private final CustomerMappingService mappingService;
-
-  public CustomerServiceImpl(CustomerRepository repository, CustomerMappingService mappingService) {
-    this.repository = repository;
-    this.mappingService = mappingService;
-  }
+//  private final CustomerRepository repository;
+//  private final CustomerMappingService mappingService;
+//
+//  public CustomerServiceImpl(CustomerRepository repository, CustomerMappingService mappingService) {
+//    this.repository = repository;
+//    this.mappingService = mappingService;
+//  }
 
   @Override
   public CustomerDto save(CustomerDto dto) {
-    Customer entity = mappingService.mapDtoToEntity(dto);
-    repository.save(entity);
-    return mappingService.mapEntityToDto(entity);
+    return null;
   }
 
   @Override
   public List<CustomerDto> getAllActiveCustomers() {
-    return repository.findAll()
-        .stream()
-        .map(mappingService::mapEntityToDto)
-        .toList();
+    return null;
   }
 
   @Override
   public CustomerDto getById(Long id) {
-    Customer customer = repository.findById(id).orElse(null);
-      if(customer != null && customer.isActive()) {
-        return mappingService.mapEntityToDto(customer);
-      }
-    return null;
+
+          return null;
   }
 
   @Override
@@ -80,7 +72,7 @@ public class CustomerServiceImpl implements CustomerService {
   }
 
   @Override
-  public Customer addProductToCustomersCart(Long customerId, Long productId) {
+  public CustomerDto addProductToCustomersCart(Long customerId, Long productId) {
     return null;
   }
 

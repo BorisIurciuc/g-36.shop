@@ -22,11 +22,19 @@ public class CustomerDto {
       accessMode = Schema.AccessMode.READ_ONLY
   )
   private Long id;
+  private CartDto cart;
 
   @Schema(description = "Customer name", example = "Jon") // add for Swagger
   private String name;
 
-  //private boolean active;
+  public CartDto getCart() {
+    return cart;
+  }
+
+  public void setCart(CartDto cart) {
+    this.cart = cart;
+  }
+//private boolean active;
 
   public Long getId() {
     return id;
@@ -52,18 +60,22 @@ public class CustomerDto {
     if (!(o instanceof CustomerDto that)) {
       return false;
     }
-    return Objects.equals(getId(), that.getId()) && Objects.equals(getName(),
-        that.getName());
+    return Objects.equals(getId(), that.getId()) && Objects.equals(getCart(),
+        that.getCart()) && Objects.equals(getName(), that.getName());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(getId());
+    return Objects.hash(getId(), getCart(), getName());
   }
+
 
   @Override
   public String toString() {
-    return String.format("Customer: id - %d, name - %s, active - %s",
-        id, name);
+    return "CustomerDto{" +
+        "id=" + id +
+        ", cart=" + cart +
+        ", name='" + name + '\'' +
+        '}';
   }
 }

@@ -28,30 +28,30 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class) // задаем порядок прохождения тестов
 class ProductControllerTest {
 
   @LocalServerPort
-  private  int port; // port for Tomcat
+  private int port; // port for Tomcat
 
-  @Autowired // отжаем под управление Spring
+  @Autowired // отдаем под управление Spring
   private UserRepository userRepository;
 
   @Autowired
   private RoleRepository roleRepository;
 
-  private TestRestTemplate template; //send http request to Tomcat
-  private HttpHeaders headers;
+  private TestRestTemplate template; // send http request to Tomcat
+  private HttpHeaders headers; // with headers
 
-  private ProductDto testProduct; //product for test
+  private ProductDto testProduct; // product for test
 
-  //tokens
+  // tokens for admin and user
   private String adminAccessToken;
   private String userAccessToken;
 
-  private final String ADMIN_ROLE_TITLE = "ROLE_ADMIN";
-  private final String USER_ROLE_TITLE = "ROLE_USER";
+  private final String ADMIN_ROLE_TITLE = "ROLE_ADMIN"; //
+  private final String USER_ROLE_TITLE = "ROLE_USER"; //
 
   private final String TEST_PRODUCT_TITLE = "Test product";
   private final BigDecimal TEST_PRODUCT_PRICE = new BigDecimal(99);
@@ -60,7 +60,7 @@ class ProductControllerTest {
   private final String TEST_USER_NAME = "Test User";
   private final String TEST_PASSWORD = "Test password";
 
-  //constatnt for login to server
+  // constants for login to server
   private final String URL_PREFIX = "http://localhost:";
   private final String AUTHORIZATION_RESOURCE = "/auth";
   private final String PRODUCTS_RESOURCE = "/products";
@@ -68,13 +68,13 @@ class ProductControllerTest {
   private final String ALL_ENDPOINT = "/all";
   private final String ID_PARAM_TITLE = "?id=";
 
-  private final String BEARER_PREFIX = "Bearer ";
+  private final String BEARER_PREFIX = "Bearer";
   private final String AUTH_HEADER_NAME = "Authorization";
 
   @BeforeEach
   public void setUp() {
 
-    template = new TestRestTemplate(); //http radio
+    template = new TestRestTemplate(); // http
     headers = new HttpHeaders();
 
     // product for test
@@ -83,36 +83,39 @@ class ProductControllerTest {
     testProduct.setPrice(TEST_PRODUCT_PRICE);
 
     BCryptPasswordEncoder encoder = null;
+
     Role roleAdmin;
     Role roleUser = null;
 
     User admin = userRepository.findByUsername(TEST_ADMIN_NAME).orElse(null);
     User user = userRepository.findByUsername(TEST_USER_NAME).orElse(null);
 
-    //check if admin is not in DB
-
-    if(admin == null) {
+    // check if admin exists in NOT in database
+    if(admin == null){
       encoder = new BCryptPasswordEncoder();
       roleAdmin = roleRepository.findByTitle(ADMIN_ROLE_TITLE).orElse(null);
       roleUser = roleRepository.findByTitle(USER_ROLE_TITLE).orElse(null);
 
-      if(roleAdmin == null || roleUser == null) {
-        throw new RuntimeException("There is no admin role or user role");
+      if(roleAdmin == null || roleUser == null){
+        throw new RuntimeException("The database doesn't have nessesary roles");
       }
 
-      //create new admin
+      // create new admin
       admin = new User();
       admin.setUsername(TEST_ADMIN_NAME);
       admin.setPassword(encoder.encode(TEST_PASSWORD));
-      admin.setRole(Set.of(roleAdmin,roleUser));
+      admin.setRoles(Set.of(roleAdmin, roleUser));
 
+      // save admin
       userRepository.save(admin);
     }
+
     // check if user exists
     if (user == null) {
       encoder = encoder == null ? new BCryptPasswordEncoder() : encoder;
       roleUser = roleUser == null ?
           roleRepository.findByTitle(USER_ROLE_TITLE).orElse(null) : roleUser;
+
       if (roleUser == null) {
         throw new RuntimeException("The database doesn't have necessary roles");
       }
@@ -121,12 +124,12 @@ class ProductControllerTest {
       user.setUsername(TEST_USER_NAME);
       user.setPassword(encoder.encode(TEST_PASSWORD));
       user.setRoles(Set.of(roleUser));
+
       // save user
       userRepository.save(user);
     }
 
-    // start AUthentication
-
+    // start Authentication
     admin.setPassword(TEST_PASSWORD);
     admin.setRoles(null);
 
@@ -136,64 +139,95 @@ class ProductControllerTest {
     // http request
     // POST -> http://localhost:8080/auth/login
     String url = URL_PREFIX + port + AUTHORIZATION_RESOURCE + LOGIN_ENDPOINT;
-    HttpEntity<User> request = new HttpEntity<>(admin, headers);
+    HttpEntity<User> request = new HttpEntity<>(admin, headers); //
 
-    //call to server
-    ResponseEntity<TokenResponseDto> response = template.exchange(
-        url,
-        HttpMethod.POST,
-        request,
-        TokenResponseDto.class);
-    //check response
+    // call to server
+    ResponseEntity<TokenResponseDto> response = template
+        .exchange(url, HttpMethod.POST, request, TokenResponseDto.class);
+    // check response
     assertTrue(response.hasBody(), "Authorization response body is empty");
     adminAccessToken = BEARER_PREFIX + response.getBody().getAccessToken();
 
     request = new HttpEntity<>(user, headers);
 
     response = template
-        .exchange(url,
-            HttpMethod.POST,
-            request,
-            TokenResponseDto.class);
+        .exchange(url, HttpMethod.POST, request, TokenResponseDto.class);
     assertTrue(response.hasBody(), "Authorization response body is empty");
     userAccessToken = BEARER_PREFIX + response.getBody().getAccessToken();
   }
 
   @Test
-  public void positiveGettingAllProductsWithoutAuthorization() {
+  public void positiveGettingAllProductsWithoutAuthorization(){
     String url = URL_PREFIX + port + PRODUCTS_RESOURCE + ALL_ENDPOINT;
-    //request
+    // request
     HttpEntity<Void> request = new HttpEntity<>(headers);
-    //response
+    // response
     ResponseEntity<ProductDto[]> response = template.exchange(url, HttpMethod.GET, request, ProductDto[].class);
     assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has unexpected status");
-    assertTrue(response.hasBody(), "Response doesn't have a body");
-
-
+    assertTrue(response.hasBody(), "Response doesn't have a body.");
   }
 
   @Test
-      public void negativeSavingProductWithoutAuthorization() {
+  public void negativeSavingProductWithoutAuthorization(){
 
-      String url = URL_PREFIX + port + PRODUCTS_RESOURCE;
-      HttpEntity<ProductDto> request = new HttpEntity<>(testProduct, headers);
+    String url = URL_PREFIX + port + PRODUCTS_RESOURCE;
+    HttpEntity<ProductDto> request = new HttpEntity<>(testProduct, headers);
 
-      ResponseEntity<ProductDto> response = template.exchange(url, HttpMethod.POST, request, ProductDto.class);
-      assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode(), "Response has unexpected status");
-      assertFalse(response.hasBody(), "Response has unexpected body");
+    ResponseEntity<ProductDto> response = template.exchange(url, HttpMethod.POST, request, ProductDto.class);
+    assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode(), "Response has unexpected status");
+    assertFalse(response.hasBody(), "Response has unexpected body.");
 
   }
 
   @Test
   public void negativeSavingProductWithUserAuthorization() {
     // TODO домашнее задание
+    String url = URL_PREFIX + port + PRODUCTS_RESOURCE;
     headers.put(AUTH_HEADER_NAME, List.of(userAccessToken));
+    HttpEntity<ProductDto> request = new HttpEntity<>(testProduct, headers);
+    ResponseEntity<ProductDto> response = template.
+        exchange(url,
+            HttpMethod.POST,
+            request,
+            ProductDto.class);
+    assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode(), "Response has unexpected status");
+
   }
 
   @Test
   @Order(1)
-  public void positiveSavingProductWithAdminAuthorization() {
-    // TODO домашнее задание
+  public void testAddNewProductAsAdmin() {
+    String url = URL_PREFIX + port + PRODUCTS_RESOURCE;
+    headers.put(AUTH_HEADER_NAME, List.of(adminAccessToken)); //admin
+    HttpEntity<ProductDto> entity = new HttpEntity<>(testProduct, headers);
+    ResponseEntity<ProductDto> response = template.
+        exchange(url,
+            HttpMethod.POST,
+            entity,
+            ProductDto.class);
+    assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has unexpected status");
+
+
+//    headers.put(AUTH_HEADER_NAME, List.of(adminAccessToken));
+//
+//    ProductDto newProduct = new ProductDto();
+//    newProduct.setTitle("New Test Product");
+//    newProduct.setPrice(new BigDecimal("149.99"));
+//
+//    String url = URL_PREFIX + port + PRODUCTS_RESOURCE;
+//    HttpEntity<ProductDto> request = new HttpEntity<>(newProduct, headers);
+//    ResponseEntity<ProductDto> response = template.exchange(
+//        url,
+//        HttpMethod.POST,
+//        request,
+//        ProductDto.class
+//    );
+//
+//    assertEquals(HttpStatus.OK, response.getStatusCode(), "Unexpected response status");
+//    assertTrue(response.hasBody(), "Response body is empty");
+//    ProductDto savedProduct = response.getBody();
+//    assertNotNull(savedProduct, "Saved product is null");
+//    assertNotNull(savedProduct.getId(), "Saved product ID is null");
   }
 
   @Test
@@ -221,41 +255,60 @@ class ProductControllerTest {
   @Test
   @Order(5)
   public void positiveGettingProductByIdWithCorrectToken() {
-    // TODO домашнее задание
-    // TODO удаляем из БД сохранённый тестовый продукт
+
+    headers.put(AUTH_HEADER_NAME, List.of(userAccessToken));
+
+    Long productId = 1L;
+    String url = URL_PREFIX + port + PRODUCTS_RESOURCE + "/" + productId;
+    HttpEntity<Void> request = new HttpEntity<>(headers);
+
+    ResponseEntity<ProductDto> response = template.exchange(
+        url,
+        HttpMethod.GET,
+        request,
+        ProductDto.class
+    );
+
+    assertEquals(HttpStatus.OK, response.getStatusCode(), "Unexpected response status");
+    assertTrue(response.hasBody(), "Response body is empty");
+    ProductDto retrievedProduct = response.getBody();
+    assertNotNull(retrievedProduct, "Retrieved product is null");
+    assertEquals(productId, retrievedProduct.getId(), "Product ID doesn't match");
+    assertNotNull(retrievedProduct.getTitle(), "Product title is null");
+    assertNotNull(retrievedProduct.getPrice(), "Product price is null");
   }
 
-//  @Test
-//  void save() {
-//  }
-//
-//  @Test
-//  void get() {
-//  }
-//
-//  @Test
-//  void update() {
-//  }
-//
-//  @Test
-//  void delete() {
-//  }
-//
-//  @Test
-//  void restore() {
-//  }
-//
-//  @Test
-//  void getProductQuantity() {
-//  }
-//
-//  @Test
-//  void getTotalPrice() {
-//  }
-//
-//  @Test
-//  void getAveragePrice() {
-//  }
+  @Test
+  void save() {
+  }
+
+  @Test
+  void get() {
+  }
+
+  @Test
+  void update() {
+  }
+
+  @Test
+  void delete() {
+  }
+
+  @Test
+  void restore() {
+  }
+
+  @Test
+  void getProductQuantity() {
+  }
+
+  @Test
+  void getTotalPrice() {
+  }
+
+  @Test
+  void getAveragePrice() {
+  }
 
 
 }

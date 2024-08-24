@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.Objects;
 
@@ -34,6 +35,9 @@ public class Customer {
 
   @Column(name = "active")
   private boolean active;
+
+  @OneToOne
+  private Cart cart;
 
   public Long getId() {
     return id;
