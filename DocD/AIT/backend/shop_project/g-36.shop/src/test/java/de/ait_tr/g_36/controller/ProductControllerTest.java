@@ -161,8 +161,8 @@ class ProductControllerTest {
   public void testUserRolesLoading() {
     User admin = userRepository.findByUsername(TEST_ADMIN_NAME).orElse(null);
     assertNotNull(admin, "Admin user not found");
-    assertFalse(admin.getRoles().isEmpty(), "Admin roles are empty");
-    assertTrue(admin.getRoles().stream().anyMatch(role -> role.getTitle().equals(ADMIN_ROLE_TITLE)),
+    assertFalse(admin.getRole().isEmpty(), "Admin roles are empty");
+    assertTrue(admin.getRole().stream().anyMatch(role -> role.getTitle().equals(ADMIN_ROLE_TITLE)),
         "Admin doesn't have ADMIN role");
   }
 

@@ -21,9 +21,9 @@ import java.util.*;
 public class TokenService  {
 
   //fields
-  private SecretKey accessKey;
-  private SecretKey refreshKey;
-  private RoleRepository roleRepository;
+  private final SecretKey accessKey;
+  private final SecretKey refreshKey;
+  private final RoleRepository roleRepository;
 
   // constructor, в который мы передадим секретные фразы
   // https://www.devglan.com/online-tools/hmac-sha256-online - для генерации секретных фраз
