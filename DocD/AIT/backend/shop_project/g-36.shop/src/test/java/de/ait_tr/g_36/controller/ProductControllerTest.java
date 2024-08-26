@@ -207,15 +207,16 @@ class ProductControllerTest {
   @Order(1)
   public void testAddNewProductAsAdmin() {
     String url = URL_PREFIX + port + PRODUCTS_RESOURCE;
-    headers.put(AUTH_HEADER_NAME, List.of(adminAccessToken)); //admin
+    headers.put(AUTH_HEADER_NAME, List.of(adminAccessToken));
     HttpEntity<ProductDto> entity = new HttpEntity<>(testProduct, headers);
-    ResponseEntity<ProductDto> response = template.
-        exchange(url,
-            HttpMethod.POST,
-            entity,
-            ProductDto.class);
+    ResponseEntity<ProductDto> response = template
+        .exchange(url, HttpMethod.POST, entity, ProductDto.class);
     assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has unexpected status");
+    ProductDto savedProduct = response.getBody();
+    assertNotNull(savedProduct, "Response body doesn't have a saved product");
+    assertEquals(testProduct.getTitle(), savedProduct.getTitle(), "Saved product has unexpected title");
 
+    //testProductId = savedProduct.getId();
 
 //    headers.put(AUTH_HEADER_NAME, List.of(adminAccessToken));
 //
@@ -267,8 +268,8 @@ class ProductControllerTest {
 
     headers.put(AUTH_HEADER_NAME, List.of(userAccessToken));
 
-    Long productId = 1L;
-    String url = URL_PREFIX + port + PRODUCTS_RESOURCE + "?=" + productId;
+    Long productId = 3L;
+    String url = URL_PREFIX + port + PRODUCTS_RESOURCE + ID_PARAM_TITLE + productId;
     HttpEntity<Void> request = new HttpEntity<>(headers);
 
     ResponseEntity<ProductDto> response = template.exchange(
@@ -280,6 +281,8 @@ class ProductControllerTest {
 
     System.out.println("Admin Token: " + adminAccessToken);
     System.out.println("User Token: " + userAccessToken);
+    System.out.println("Request Headers: " + headers);
+    System.out.println("Request URL: " + url);
     //System.out.println("User roles: " + user.getRoles());
 
     assertEquals(HttpStatus.OK, response.getStatusCode(), "Unexpected response status");

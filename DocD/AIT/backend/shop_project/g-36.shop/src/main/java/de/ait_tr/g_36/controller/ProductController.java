@@ -1,25 +1,16 @@
 package de.ait_tr.g_36.controller;
 
 import de.ait_tr.g_36.domain.dto.ProductDto;
+import de.ait_tr.g_36.exeption_handling.Response;
+import de.ait_tr.g_36.exeption_handling.exeptions.FirstTestException;
 import de.ait_tr.g_36.service.interfaces.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.math.BigDecimal;
 import java.util.List;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-
-/**
- * 09/08/2024 g-36.shop * @author Boris Iurciuc (cohort36)
- */
 @RestController
 @RequestMapping("/products")
 @Tag(
@@ -114,5 +105,15 @@ public class ProductController {
   @GetMapping("/average-price")
   public BigDecimal getAveragePrice(){
     return service.getAllActiveProductsAveragePrice();
+  }
+
+  // user call product with wrong id
+  // ПЛЮС - точечно настраиваем обработчик ошибок именно для данного контроллера,
+// если нам требуется разная логика обработки исключений в разных контроллерах
+// МИНУС - если нам не требуется разная логика для разных контроллеров,
+// придётся создавать такие обработчики в каждом контроллере отдельно
+  @ExceptionHandler(FirstTestException.class)
+  public Response handException(FirstTestException e) {
+    return new Response (e.getMessage());
   }
 }
