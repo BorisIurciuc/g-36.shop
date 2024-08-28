@@ -2,9 +2,12 @@ package de.ait_tr.g_36.service;
 
 import de.ait_tr.g_36.domain.dto.ProductDto;
 import de.ait_tr.g_36.domain.entity.Product;
+import de.ait_tr.g_36.exeption_handling.exeptions.ForthTestException;
+import de.ait_tr.g_36.exeption_handling.exeptions.ThirdTestException;
 import de.ait_tr.g_36.repository.ProductRepository;
 import de.ait_tr.g_36.service.interfaces.ProductService;
 import de.ait_tr.g_36.service.mapping.ProductMappingService;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -38,13 +41,26 @@ public class ProductServiceImpl implements ProductService {
 
 
    @Override
-  public ProductDto getById(Long id) {
-    Product product = repository.findById(id).orElse(null);
-    if(product != null && product.isActive()){
-      return mappingService.mapEntityToDto(product);
-    }
-    return null;
-  }
+//   @NotNull(message = "Product title can't be null")
+//   public ProductDto getById(Long id) {
+//     Product product = repository.findById(id).orElse(null);
+//     if(product != null && product.isActive()){
+//       return mappingService.mapEntityToDto(product);
+//     }
+//     return null;
+//   }
+
+   public ProductDto getById(Long id) {
+     Product product = repository.findById(id).orElseThrow(() ->
+         new ForthTestException("Product with ID " + id + " not found"));
+
+     if (!product.isActive()) {
+       throw new ForthTestException("Product with ID " + id + " is not active");
+     }
+
+     return mappingService.mapEntityToDto(product);
+   }
+
 
   @Override
   public ProductDto update(ProductDto product) {
