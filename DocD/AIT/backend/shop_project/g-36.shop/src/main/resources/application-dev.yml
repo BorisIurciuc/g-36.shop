@@ -14,8 +14,8 @@ spring:
         auto_quote_keyword: true
 
   mail:
-    username: leonid.kleimann@ait-tr.de
-    password: ilipsxlagchovjbm
+    username: boris.iurciuc@gmail.com
+    password: ilgxqzrggzpwzvwr
     host: smtp.gmail.com
     port: 587
     properties:

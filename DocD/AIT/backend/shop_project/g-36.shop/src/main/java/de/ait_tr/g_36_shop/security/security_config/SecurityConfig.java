@@ -46,7 +46,7 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.GET, "/products").hasAnyRole("ADMIN", "USER")
             .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
             .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/refresh").permitAll() // разрешаем всем доступ к этим endpoints
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
         ).build();
   }
 }

@@ -3,6 +3,7 @@ package de.ait_tr.g_36_shop.service;
 import de.ait_tr.g_36_shop.domain.dto.ProductDto;
 import de.ait_tr.g_36_shop.domain.entity.Product;
 import de.ait_tr.g_36_shop.exeption_handling.exeptions.ForthTestException;
+import de.ait_tr.g_36_shop.exeption_handling.exeptions.ProductNotFoundException;
 import de.ait_tr.g_36_shop.repository.ProductRepository;
 import de.ait_tr.g_36_shop.service.interfaces.ProductService;
 import de.ait_tr.g_36_shop.service.mapping.ProductMappingService;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -67,12 +69,21 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public void deleteById(Long id) {
-
+    Product product = repository.findById(id).orElse(null);
+    if (product == null) {
+      throw new ProductNotFoundException(id);
+    }
+    product.setActive(false);
   }
 
   @Override
+  @Transactional
   public void deleteByTitle(String title) {
-
+    Product product = repository.findByTitle(title).orElse(null);
+    if (product == null) {
+      throw new ProductNotFoundException(title);
+    }
+    product.setActive(false);
   }
 
   @Override
