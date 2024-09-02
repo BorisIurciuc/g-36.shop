@@ -58,22 +58,13 @@ public class ProductController {
   ) {
     return service.getById(id);
   }
-//  public List<ProductDto> get(@RequestParam(required = false) Long id) {
-//    //TODO обращаемся к серверу
-//    if (id == null) {
-//      return service.getAllProducts();
-//    } else {
-//      ProductDto product = service.getById(id);
-//      return product == null ? null : List.of(product);
-//    }
-//  }
 
   @GetMapping("/all")
   public List<ProductDto> getAll() {
     return service.getAllProducts();
   }
 
-  @PutMapping
+  @PutMapping("/update")
   public ProductDto update(@RequestBody ProductDto product){
     return service.update(product);
   }

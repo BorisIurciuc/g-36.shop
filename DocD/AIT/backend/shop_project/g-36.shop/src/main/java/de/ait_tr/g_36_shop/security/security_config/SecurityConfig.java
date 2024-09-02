@@ -45,8 +45,12 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.GET, "/products/all").permitAll()
             .requestMatchers(HttpMethod.GET, "/products").hasAnyRole("ADMIN", "USER")
             .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/refresh").permitAll() // разрешаем всем доступ к этим endpoints
-                .anyRequest().authenticated()
+            .requestMatchers(HttpMethod.PUT, "/products/update").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/refresh", "/register").permitAll()
+            .requestMatchers(HttpMethod.DELETE,"/products").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.PUT, "/products/restore").hasRole("ADMIN")
+            // разрешаем всем доступ к этим endpoints
+                .anyRequest().permitAll()
         ).build();
   }
 }

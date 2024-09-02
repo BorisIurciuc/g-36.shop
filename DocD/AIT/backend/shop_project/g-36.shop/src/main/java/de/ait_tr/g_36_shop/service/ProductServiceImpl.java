@@ -63,17 +63,32 @@ public class ProductServiceImpl implements ProductService {
 
 
   @Override
-  public ProductDto update(ProductDto product) {
-    return null;
+  //@Transactional
+  public ProductDto update(ProductDto dto) {
+    Product existingProduct = repository.findById(dto.getId())
+        .orElseThrow(() -> new ProductNotFoundException(dto.getId()));
+
+    // Debug log to print the existing product before updating
+    System.out.println("Existing Product: " + existingProduct);
+
+    // Update fields
+    existingProduct.setTitle(dto.getTitle());
+    existingProduct.setPrice(dto.getPrice());
+
+    // Debug log to print the updated product
+    System.out.println("Updated Product: " + existingProduct);
+
+    Product updatedProduct = repository.save(existingProduct);
+
+    return mappingService.mapEntityToDto(updatedProduct);
   }
 
   @Override
+  @Transactional
   public void deleteById(Long id) {
-    Product product = repository.findById(id).orElse(null);
-    if (product == null) {
-      throw new ProductNotFoundException(id);
-    }
+    Product product = repository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
     product.setActive(false);
+    repository.save(product); // Save the entity to ensure it’s persisted
   }
 
   @Override
@@ -87,8 +102,10 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
+  @Transactional
   public void restoreById(Long id) {
-
+    Product product = repository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
+    product.setActive(true);
   }
 
   @Override

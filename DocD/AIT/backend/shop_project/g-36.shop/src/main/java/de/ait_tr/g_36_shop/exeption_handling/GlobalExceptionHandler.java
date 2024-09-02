@@ -1,6 +1,7 @@
 package de.ait_tr.g_36_shop.exeption_handling;
 
 import de.ait_tr.g_36_shop.exeption_handling.exeptions.ForthTestException;
+import de.ait_tr.g_36_shop.exeption_handling.exeptions.ProductNotFoundException;
 import de.ait_tr.g_36_shop.exeption_handling.exeptions.ThirdTestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,12 @@ public class GlobalExceptionHandler {
   public ResponseEntity<Response> handleException(ForthTestException e) {
     Response response = new Response(e.getMessage());
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(ProductNotFoundException.class)
+  public ResponseEntity<Response> handleException(ProductNotFoundException e) {
+    Response response = new Response(e.getMessage());
+    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
   }
 
 }
