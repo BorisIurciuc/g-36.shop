@@ -17,12 +17,11 @@ public class ConfirmationServiceImpl implements ConfirmationService {
     this.repository = repository;
   }
 
-
   @Override
   public String generateConfirmationCode(User user) {
 
     //LocalDateTime expired = LocalDateTime.now().plusDays(1); //production
-    LocalDateTime expired = LocalDateTime.now().plusMinutes(1);
+    LocalDateTime expired = LocalDateTime.now().plusMinutes(60);
 
     //generate code
     String code = UUID.randomUUID().toString();

@@ -1,23 +1,12 @@
 package de.ait_tr.g_36_shop.domain.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
-/**
- * 07/08/2024 g-36.shop * @author Boris Iurciuc (cohort36)
- */
 @Entity
 @Table(name = "product")
 @Schema(description = "Class that describes Product") // add for Swagger
@@ -35,12 +24,11 @@ public class Product {
 
   @Column(name = "title")
   @Schema(description = "Product title", example = "banana") // add for Swagger
-
   @NotNull(message = "Product title can't be null")
-  @NotBlank(message = "Product title can't be null")
+  @NotBlank(message = "Product title can't be empty")
   @Pattern(
       regexp = "[A-Z][a-z ]{2,}",
-      message = "Product title should start with capital letter, at least 3 character length"
+      message = "Product title should start with capital letter, at least 3 characters length"
   )
   private String title;
 
@@ -53,12 +41,23 @@ public class Product {
   @DecimalMax(
       value = "100000.00",
       inclusive = false,
-      message = "Price should be less than 100000.00"
+      message = "Product price should be less than 100 000"
   )
   private BigDecimal price;
 
   @Column(name = "active")
   private boolean active;
+
+  @Column(name = "image")
+  private String image;
+
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
+  }
 
   public Long getId() {
     return id;
@@ -95,21 +94,18 @@ public class Product {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Product product = (Product) o;
-    return active == product.active && Objects.equals(id, product.id) && Objects.equals(title, product.title) && Objects.equals(price, product.price);
+    if (!(o instanceof Product product)) return false;
+    return active == product.active && Objects.equals(id, product.id) && Objects.equals(title, product.title) && Objects.equals(price, product.price) && Objects.equals(image, product.image);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, title, price, active);
+    return Objects.hash(id, title, price, active, image);
   }
 
   @Override
   public String toString() {
-    return String.format("ProductDto{id=%s, title='%s', price=%s}",
-        id != null ? id : "null",
-        title != null ? title : "null",
-        price != null ? String.format("%.2f", price) : "null");
+    return String.format("Product: id - %d, title - %s, price - %s, active - %s",
+        id, title, price, active ? "yes" : "no");
   }
 }

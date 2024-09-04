@@ -53,9 +53,6 @@ public class EmailServiceImpl implements EmailService {
     }
   }
 
-
-
-
   private String generateEmailText(User user) {
     Template template = null;
     try {

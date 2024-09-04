@@ -122,4 +122,14 @@ public class ProductServiceImpl implements ProductService {
   public BigDecimal getAllActiveProductsAveragePrice() {
     return null;
   }
+
+  @Override
+  @Transactional
+  public void attachImage(String imgUrl, String productTitle) {
+
+    Product product = repository.findByTitle(productTitle).orElseThrow(
+        () -> new RuntimeException("Product not found")
+    );
+    product.setImage(imgUrl);
+  }
 }

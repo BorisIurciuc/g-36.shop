@@ -8,11 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * 02/09/2024 g-36.shop
- *
- * @author Boris Iurciuc (cohort36)
- */
 @RestController
 @RequestMapping("/register")
 public class RegistrationController {
@@ -31,6 +26,4 @@ public class RegistrationController {
     return new Response("User registered successfully. Please check your email.");
 
   }
-
-
 }
