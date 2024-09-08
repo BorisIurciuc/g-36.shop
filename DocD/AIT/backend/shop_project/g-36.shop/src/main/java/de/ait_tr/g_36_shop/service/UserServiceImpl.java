@@ -3,9 +3,11 @@ package de.ait_tr.g_36_shop.service;
 import de.ait_tr.g_36_shop.domain.entity.Role;
 import de.ait_tr.g_36_shop.domain.entity.User;
 import de.ait_tr.g_36_shop.repository.UserRepository;
+import de.ait_tr.g_36_shop.service.interfaces.ConfirmationService;
 import de.ait_tr.g_36_shop.service.interfaces.EmailService;
 import de.ait_tr.g_36_shop.service.interfaces.RoleService;
 import de.ait_tr.g_36_shop.service.interfaces.UserService;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.Set;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,45 +18,53 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
-  private UserRepository repository;
-  private final BCryptPasswordEncoder encoder;
+  private final UserRepository repository;
   private final RoleService roleService;
   private final EmailService emailService;
+  private final BCryptPasswordEncoder encoder;
+  private final ConfirmationService confirmationService;
 
-  public UserServiceImpl(UserRepository repository, BCryptPasswordEncoder encoder,
-      RoleService roleService, EmailService emailService) {
+  public UserServiceImpl(UserRepository repository, RoleService roleService, EmailService emailService, BCryptPasswordEncoder encoder, ConfirmationService confirmationService) {
     this.repository = repository;
-    this.encoder = encoder;
     this.roleService = roleService;
     this.emailService = emailService;
+    this.encoder = encoder;
+    this.confirmationService = confirmationService;
   }
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     return repository.findByUsername(username).orElseThrow(
-        () -> new UsernameNotFoundException(
-            String.format("User %s not found", username))
+        () -> new UsernameNotFoundException(String.format("User %s not found", username))
     );
   }
 
   @Override
   public void register(User user) {
+    String username = user.getUsername();
+    User existedUser = repository.findByUsername(username).orElse(null);
 
-    // TODO *** домашнее задание - учесть, что пользователь
-    // TODO может регистрироваться уже не первый раз
-    // TODO например, если первый раз он просто не успел до истечения срока действия кода
+    if (existedUser != null && existedUser.isActive()) {
+      throw new RuntimeException("User already exists");
+    }
 
-    user.setId(null);
-    user.setPassword(encoder.encode(user.getPassword()));
+    if (existedUser == null) {
+      existedUser = new User();
+      existedUser.setUsername(username);
+      existedUser.setRoles(Set.of(roleService.getRoleUser()));
+    }
 
-    Role userRole = roleService.getRoleUser();
-    user.setRoles(Set.of(userRole));
-    user.setActive(false);
+    existedUser.setPassword(encoder.encode(user.getPassword()));
+    existedUser.setEmail(user.getEmail());
 
-    //TODO обработать все возможные ошибки
+    repository.save(existedUser);
+    emailService.sendConfirmationEmail(existedUser);
+  }
 
-    repository.save(user);
-    emailService.sendConfirmationEmail(user);
-
+  @Override
+  @Transactional
+  public void registrationConfirm(String code) {
+    User user = confirmationService.getUserByConfirmationCode(code);
+    user.setActive(true);
   }
 }

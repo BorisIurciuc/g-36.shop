@@ -1,5 +1,7 @@
 package de.ait_tr.g_36_shop.security.security_config;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 import de.ait_tr.g_36_shop.security.security_filter.TokenFilter;
 //import io.swagger.v3.oas.annotations.info.Contact;
 import org.springframework.context.annotation.Bean;
@@ -39,7 +41,8 @@ public class SecurityConfig {
         .csrf(AbstractHttpConfigurer :: disable)
         .sessionManagement(x -> x
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // отключили сессии
-        .httpBasic(AbstractHttpConfigurer::disable) // отключили базовую авторизацию
+        //.httpBasic(AbstractHttpConfigurer::disable) // отключили базовую авторизацию
+        .httpBasic(withDefaults())
         .addFilterAfter(filter, UsernamePasswordAuthenticationFilter.class) // добавили свой фильтр
         .authorizeHttpRequests(x -> x
             .requestMatchers(HttpMethod.GET, "/products/all").permitAll()
@@ -48,9 +51,11 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.PUT, "/products/update").hasRole("ADMIN")
             .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/refresh", "/register").permitAll()
             .requestMatchers(HttpMethod.DELETE,"/products").hasRole("ADMIN")
-            .requestMatchers(HttpMethod.PUT, "/products/restore").hasRole("ADMIN")
-            // разрешаем всем доступ к этим endpoints
-                .anyRequest().permitAll()
-        ).build();
+            .requestMatchers(HttpMethod.GET, "/hello").permitAll()
+            .requestMatchers(HttpMethod.POST, "/register").permitAll()
+            .requestMatchers(HttpMethod.GET, "/register").permitAll()
+        )
+        .addFilterAfter(filter, UsernamePasswordAuthenticationFilter.class).
+        build();
   }
 }

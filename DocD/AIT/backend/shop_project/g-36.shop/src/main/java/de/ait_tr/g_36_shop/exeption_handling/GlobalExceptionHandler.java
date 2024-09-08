@@ -1,5 +1,6 @@
 package de.ait_tr.g_36_shop.exeption_handling;
 
+import de.ait_tr.g_36_shop.exeption_handling.exeptions.ConfirmationFailedException;
 import de.ait_tr.g_36_shop.exeption_handling.exeptions.ForthTestException;
 import de.ait_tr.g_36_shop.exeption_handling.exeptions.ProductNotFoundException;
 import de.ait_tr.g_36_shop.exeption_handling.exeptions.ThirdTestException;
@@ -40,5 +41,9 @@ public class GlobalExceptionHandler {
     Response response = new Response(e.getMessage());
     return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
   }
-
+  @ExceptionHandler(ConfirmationFailedException.class)
+  public ResponseEntity<Response> handleException(ConfirmationFailedException e) {
+    Response response = new Response(e.getMessage());
+    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+  }
 }

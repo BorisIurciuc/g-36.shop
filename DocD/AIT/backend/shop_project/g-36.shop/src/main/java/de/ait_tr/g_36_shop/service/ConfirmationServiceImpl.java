@@ -2,6 +2,7 @@ package de.ait_tr.g_36_shop.service;
 
 import de.ait_tr.g_36_shop.domain.entity.ConfirmationCode;
 import de.ait_tr.g_36_shop.domain.entity.User;
+import de.ait_tr.g_36_shop.exeption_handling.exeptions.ConfirmationFailedException;
 import de.ait_tr.g_36_shop.repository.ConfirmationCodeRepository;
 import de.ait_tr.g_36_shop.service.interfaces.ConfirmationService;
 import java.time.LocalDateTime;
@@ -34,4 +35,21 @@ public class ConfirmationServiceImpl implements ConfirmationService {
 
     return code;
   }
+
+  @Override
+  public User getUserByConfirmationCode(String code) {
+    ConfirmationCode entity = repository.findByCode(code).orElse(null);
+
+    if (entity == null) {
+      throw new ConfirmationFailedException("Confirmation code not found");
+    }
+
+    if (LocalDateTime.now().isAfter(entity.getExpired())) {
+      throw new ConfirmationFailedException("Confirmation code expired");
+    }
+
+    return entity.getUser();
+  }
+
+
 }
