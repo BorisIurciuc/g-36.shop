@@ -36,5 +36,4 @@ public class DigitalOceanDataSourceConfiguration {
         .password(password)
         .build();
   }
-
 }
